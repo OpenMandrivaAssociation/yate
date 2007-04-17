@@ -2,14 +2,14 @@
 %define lib_name_devel %mklibname %{name} -d %{version}
 
 Name:           yate
-Version:        1.1.0
-Release:        %mkrel 5
+Version:        1.2.0
+Release:        %mkrel 1
 Epoch:          0
 Summary:        Yet Another Telephony Engine
 License:        GPL
 Group:          Networking/Instant messaging
 URL:            http://yate.null.ro/
-Source0:        http://yate.null.ro/yate-%{version}-1.tar.gz
+Source0:        http://yate.null.ro/tarballs/yate1/yate-%{version}-1.tar.gz
 # Converted from <http://yate.null.ro/favicon.ico>
 Source1:        yate-16.png
 Source2:        yate-32.png
@@ -287,6 +287,9 @@ EOF
 %{_libdir}/yate/modules/osschan.yate
 %{_libdir}/yate/modules/ilbccodec.yate
 %{_libdir}/yate/modules/faxchan.yate
+%{_libdir}/yate/modules/speexcodec.yate
+%{_libdir}/yate/modules/yjinglechan.yate
+%{_libdir}/yate/modules/ystunchan.yate
 %dir %{_logdir}/yate
 %{_mandir}/man8/yate.8*
 %config(noreplace) %{_sysconfdir}/logrotate.d/yate
@@ -305,9 +308,11 @@ EOF
 %config(noreplace) %{_sysconfdir}/yate/rmanager.conf
 %config(noreplace) %{_sysconfdir}/yate/yate.conf
 %config(noreplace) %{_sysconfdir}/yate/yiaxchan.conf
+%config(noreplace) %{_sysconfdir}/yate/yjinglechan.conf
 %config(noreplace) %{_sysconfdir}/yate/yradius.conf
 %config(noreplace) %{_sysconfdir}/yate/yrtpchan.conf
 %config(noreplace) %{_sysconfdir}/yate/ysipchan.conf
+%config(noreplace) %{_sysconfdir}/yate/ystunchan.conf
 
 %files alsa
 %defattr(-, root, root)
@@ -381,5 +386,3 @@ EOF
 
 %files all
 %defattr(-,root,root)
-
-
