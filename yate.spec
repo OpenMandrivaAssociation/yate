@@ -3,7 +3,7 @@
 
 Name:           yate
 Version:        1.2.0
-Release:        %mkrel 1
+Release:        %mkrel 2
 Epoch:          0
 Summary:        Yet Another Telephony Engine
 License:        GPL
@@ -30,6 +30,7 @@ BuildRequires:  libpq-devel
 BuildRequires:  libpri-devel
 BuildRequires:  libpwlib-devel
 BuildRequires:  libspandsp-devel
+BuildRequires:  libspeex-devel
 BuildRequires:  libtonezone-devel
 BuildRequires:  openh323-devel
 BuildRequires:  postgresql-devel
