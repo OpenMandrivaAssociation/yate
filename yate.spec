@@ -1,9 +1,9 @@
 %define lib_name %mklibname %{name} %{version}
-%define lib_name_devel %mklibname %{name} -d %{version}
+%define lib_name_devel %mklibname %{name} -d
 
 Name:           yate
-Version:        1.2.0
-Release:        %mkrel 2
+Version:        1.3.0
+Release:        %mkrel 1
 Epoch:          0
 Summary:        Yet Another Telephony Engine
 License:        GPL
@@ -135,6 +135,7 @@ Requires:       %{lib_name} = %{epoch}:%{version}
 Provides:       %{name}-devel = %{epoch}:%{version}
 Provides:       lib%{name}-devel = %{epoch}:%{version}
 Provides:       %{_lib}%{name}-devel = %{epoch}:%{version}
+Obsoletes:	%mklibname -d %{name} 1.2.0
 
 %description -n %{lib_name_devel}
 This package includes the libraries and header files for Yate that can 
