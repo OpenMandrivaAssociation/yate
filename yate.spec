@@ -230,6 +230,9 @@ EOF
         --remove-category Application                   \
         %{buildroot}%{_datadir}/applications/yate-gtk2.desktop
 
+# remove wrong location doc files
+rm -fr %{buildroot}%{_datadir}/doc/%{name}-%{version}
+
 %clean
 %{__rm} -rf %{buildroot}
 
@@ -290,6 +293,9 @@ EOF
 %{_libdir}/yate/modules/speexcodec.yate
 %{_libdir}/yate/modules/yjinglechan.yate
 %{_libdir}/yate/modules/ystunchan.yate
+%{_libdir}/yate/modules/park.yate
+%{_libdir}/yate/modules/queues.yate
+%{_libdir}/yate/modules/sipfeatures.yate
 %dir %{_logdir}/yate
 %{_mandir}/man8/yate.8*
 %config(noreplace) %{_sysconfdir}/logrotate.d/yate
@@ -313,6 +319,7 @@ EOF
 %config(noreplace) %{_sysconfdir}/yate/yrtpchan.conf
 %config(noreplace) %{_sysconfdir}/yate/ysipchan.conf
 %config(noreplace) %{_sysconfdir}/yate/ystunchan.conf
+%config(noreplace) %{_sysconfdir}/yate/sipfeatures.conf
 
 %files alsa
 %defattr(-, root, root)
