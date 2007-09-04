@@ -29,7 +29,7 @@ BuildRequires:  libmysql-devel
 BuildRequires:  libpq-devel
 BuildRequires:  libpri-devel
 BuildRequires:  libpwlib-devel
-BuildRequires:  libspandsp-devel
+BuildRequires:  spandsp-devel
 BuildRequires:  libspeex-devel
 BuildRequires:  libtonezone-devel
 BuildRequires:  openh323-devel
