@@ -287,7 +287,6 @@ EOF
 %{_libdir}/yate/modules/enumroute.yate
 %{_libdir}/yate/modules/osschan.yate
 %{_libdir}/yate/modules/ilbccodec.yate
-%{_libdir}/yate/modules/faxchan.yate
 %{_libdir}/yate/modules/speexcodec.yate
 %{_libdir}/yate/modules/yjinglechan.yate
 %{_libdir}/yate/modules/ystunchan.yate
