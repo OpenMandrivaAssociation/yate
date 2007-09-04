@@ -29,7 +29,6 @@ BuildRequires:  mysql-devel
 BuildRequires:  pq-devel
 BuildRequires:  pri-devel
 BuildRequires:  pwlib-devel
-BuildRequires:  spandsp-devel
 BuildRequires:  speex-devel
 BuildRequires:  tonezone-devel
 BuildRequires:  openh323-devel
@@ -185,7 +184,7 @@ once. It contains no files, just dependencies to all other packages.
 %{__autoconf}
 
 %build
-%{configure2_5x} --without-kdoc --without-wphwec
+%{configure2_5x} --without-kdoc --without-wphwec --without-spandsp
 %{__make}
 %{__make} apidocs
 
