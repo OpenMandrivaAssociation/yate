@@ -33,7 +33,6 @@ BuildRequires:  speex-devel
 BuildRequires:  tonezone-devel
 BuildRequires:  openh323-devel
 BuildRequires:  postgresql-devel
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 Yate is a telephony engine designed to implement PBX and IVR solutions 
