@@ -242,9 +242,13 @@ rm -fr %{buildroot}%{_datadir}/doc/%{name}-%{version}
 %preun
 %_preun_service %{name}
 
+%if %mdkversion < 200900
 %post -n %{lib_name} -p /sbin/ldconfig
+%endif
 
+%if %mdkversion < 200900
 %postun -n %{lib_name} -p /sbin/ldconfig
+%endif
 
 %post gtk2
 %{update_desktop_database}
