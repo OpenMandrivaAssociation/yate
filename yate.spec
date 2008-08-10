@@ -2,18 +2,20 @@
 %define lib_name_devel %mklibname %{name} -d
 
 Name:           yate
-Version:        1.3.0
-Release:        %mkrel 3
+Version:        2.0.0
+Release:        %mkrel 1
 Epoch:          0
 Summary:        Yet Another Telephony Engine
-License:        GPL
+License:        GPLv2+
 Group:          Networking/Instant messaging
 URL:            http://yate.null.ro/
-Source0:        http://yate.null.ro/tarballs/yate1/yate-%{version}-1.tar.gz
+Source0:        http://yate.null.ro/tarballs/yate2/yate2.tar.gz
 # Converted from <http://yate.null.ro/favicon.ico>
 Source1:        yate-16.png
 Source2:        yate-32.png
 Patch0:         yate-fhs.patch
+Patch1:         yate-link-cxx.patch
+Patch2:         yate-linking-order.patch
 Requires(post): rpm-helper
 Requires(preun): rpm-helper
 BuildRequires:  desktop-file-utils
@@ -23,9 +25,10 @@ BuildRequires:  ImageMagick
 BuildRequires:  alsa-lib-devel
 BuildRequires:  coredumper-devel
 BuildRequires:  gsm-devel
-BuildRequires:  gtk+2-devel
-BuildRequires:  mozilla-firefox-devel
+BuildRequires:  qt4-devel
+BuildRequires:  xulrunner-devel
 BuildRequires:  mysql-devel
+BuildRequires:  openssl-devel
 BuildRequires:  pq-devel
 BuildRequires:  pri-devel
 BuildRequires:  pwlib-devel
@@ -71,10 +74,20 @@ Group:          Networking/Instant messaging
 Yate drivers for ISDN PRI cards supported by the Zaptel or Wanpipe 
 kernel interfaces.
 
+%package openssl
+Summary:        OpenSSL based encryption support for Yate
+Group:          Networking/Instant messaging
+Provides:       %{name}-ssl = %{epoch}:%{version}-%{release}
+Provides:       %{name}-crypto = %{epoch}:%{version}-%{release}
+
+%description openssl
+This package provides SSL/TLS encrypted communication support for Yate as
+well as cryptographic routines used for other purposes.
+
 %package pgsql
 Summary:        PostgreSQL database driver for Yate
 Group:          Networking/Instant messaging
-Provides:       yate-database
+Provides:       yate-database = %{epoch}:%{version}-%{release}
 
 %description pgsql
 This package allows Yate to connect to a PostgreSQL database server. 
@@ -90,31 +103,27 @@ Provides:       yate-database
 This package allows Yate to connect to a MySQL database server. All 
 modules that support database access will be able to use MySQL.
 
-%package gtk2
-Summary:        Gtk2 client package for Yate
+%package client-common
+Summary:        Common files for all Yate clients
 Group:          Networking/Instant messaging
-Provides:       yate-client
-Requires(post): desktop-file-utils
-Requires(postun): desktop-file-utils
 
-%description gtk2
-The yate-gtk2 package includes the files needed to use Yate as a VoIP 
-client with a Gtk2 graphical interface.
+%description client-common
+This package includes the common files needed to use Yate as a VoIP client.
 
-%package mozilla
-Summary:        Mozilla embedding in Yate
+%package qt4
+Summary:        Qt-4 client package for Yate
 Group:          Networking/Instant messaging
-Requires:       yate-gtk2 = %{epoch}:%{version}
-Provides:       yate-browser
+Provides:       %{name}-client = %{epoch}:%{version}-%{release}
+Requires:       %{name}-client-common = %{epoch}:%{version}-%{release}
 
-%description mozilla
-This package adds a Mozilla widget that can be embedded in a Yate 
-client window.
+%description qt4
+The yate-qt4 package includes the files needed to use Yate as a VoIP client
+with a Qt version 4 graphical interface.
 
 %package scripts
 Summary:        External scripting package for Yate
 Group:          Networking/Instant messaging
-Requires:       %{name}
+Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description scripts
 The yate-scripts package includes libraries for using external scripts 
@@ -130,10 +139,10 @@ Library for Yate.
 %package -n %{lib_name_devel}
 Summary:        Development package for Yate
 Group:          Development/C++
-Requires:       %{lib_name} = %{epoch}:%{version}
-Provides:       %{name}-devel = %{epoch}:%{version}
-Provides:       lib%{name}-devel = %{epoch}:%{version}
-Provides:       %{_lib}%{name}-devel = %{epoch}:%{version}
+Requires:       %{lib_name} = %{epoch}:%{version}-%{release}
+Provides:       %{name}-devel = %{epoch}:%{version}-%{release}
+Provides:       lib%{name}-devel = %{epoch}:%{version}-%{release}
+Provides:       %{_lib}%{name}-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	%mklibname -d %{name} 1.2.0
 
 %description -n %{lib_name_devel}
@@ -143,16 +152,16 @@ be used to build and install new modules.
 %package all
 Summary:        Metapackage for Yate
 Group:          Networking/Instant messaging
-Requires:       %{name} = %{epoch}:%{version}
-Requires:       %{name}-alsa = %{epoch}:%{version}
-Requires:       %{name}-gsm = %{epoch}:%{version}
-Requires:       %{name}-h323 = %{epoch}:%{version}
-Requires:       %{name}-isdn = %{epoch}:%{version}
-Requires:       %{name}-mysql = %{epoch}:%{version}
-Requires:       %{name}-pgsql = %{epoch}:%{version}
-Requires:       %{name}-gtk2 = %{epoch}:%{version}
-Requires:       %{name}-mozilla = %{epoch}:%{version}
-Requires:       %{name}-scripts = %{epoch}:%{version}
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+Requires:       %{name}-alsa = %{epoch}:%{version}-%{release}
+Requires:       %{name}-gsm = %{epoch}:%{version}-%{release}
+Requires:       %{name}-h323 = %{epoch}:%{version}-%{release}
+Requires:       %{name}-isdn = %{epoch}:%{version}-%{release}
+Requires:       %{name}-openssl = %{epoch}:%{version}-%{release}
+Requires:       %{name}-mysql = %{epoch}:%{version}-%{release}
+Requires:       %{name}-pgsql = %{epoch}:%{version}-%{release}
+Requires:       %{name}-qt4 = %{epoch}:%{version}-%{release}
+Requires:       %{name}-scripts = %{epoch}:%{version}-%{release}
 
 %description all
 Metapackage for Yate allowing to fetch and install all components at 
@@ -160,18 +169,11 @@ once. It contains no files, just dependencies to all other packages.
 
 %prep
 %setup -q -n %{name}
-%patch0 -p1
-# fix gtkmozembed detection
-%{__perl} -pi -e 's/mozilla-gtkmozembed/firefox-gtkmozembed/g' configure.in
+#%%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 # fix openh323 detection
 %{__perl} -pi -e 's|/lib/|/%{_lib}/|g' configure.in
-# fix zaptel detection
-%{__perl} -pi -e 's|linux/zaptel.h|zaptel/zaptel.h|g' configure.in modules/zapchan.cpp
-# fix wanpipe detection
-# XXX: there's still an error in the wanpipe headers
-%{__perl} -pi -e 's|linux/(wanpipe.*\.h)|wanpipe/\1|g;' \
-              -e 's|linux/sdla_aft_te1\.h|wanpipe/sdla_aft_te1\.h|g;' \
-  configure.in modules/wpchan.cpp
 # fix CFLAGS
 %{__perl} -pi -e 's|^CFLAGS := (.*)|CFLAGS := %{optflags} \1|g;' \
               -e 's|^CXXFLAGS := (.*)|CXXFLAGS := %{optflags} \1|g;' \
@@ -180,20 +182,21 @@ once. It contains no files, just dependencies to all other packages.
 # fix caps and logdir
 %{__perl} -pi -e 's|YATE|yate|g;' \
               -e 's|/var/log|%{_logdir}|g;' \
-  yate.init
-%{__autoconf}
+  packing/yate.init
 
 %build
-%{configure2_5x} --without-kdoc --without-wphwec --without-spandsp
-%{__make}
-%{__make} apidocs
+export CXXFLAGS="%{optflags} `pkg-config --cflags QtCore QtGui QtXml QtNetwork`"
+export LDFLAGS="-lpthread `pkg-config --libs QtCore QtGui QtXml QtNetwork`"
+%{configure2_5x} --with-archlib=%{_lib}
+%{__make} 
+%{__make} apidocs-everything 
 
 %install
 %{__rm} -rf %{buildroot}
 %{makeinstall_std}
 
 %{__mkdir_p} %{buildroot}%{_initrddir}
-%{__cp} -a yate.init %{buildroot}%{_initrddir}/yate
+%{__cp} -a packing/yate.init %{buildroot}%{_initrddir}/yate
 
 %{__mkdir_p} %{buildroot}%{_logdir}/yate
 
@@ -212,26 +215,28 @@ once. It contains no files, just dependencies to all other packages.
 }
 EOF
 
-%{__rm} %{buildroot}%{_libdir}/menu/yate-gtk2.menu
-
+%{__rm} %{buildroot}%{_libdir}/menu/yate-qt4.menu
 %{__mkdir_p} %{buildroot}%{_datadir}/icons/hicolor/16x16/apps
-%{__cp} -a %{SOURCE1} %{buildroot}%{_datadir}/icons/hicolor/16x16/apps/%{name}-gtk2.png
+%{__cp} -a %{SOURCE1} %{buildroot}%{_datadir}/icons/hicolor/16x16/apps/%{name}-qt4.png
 %{__mkdir_p} %{buildroot}%{_datadir}/icons/hicolor/32x32/apps
-%{__cp} -a %{SOURCE2} %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}-gtk2.png
+%{__cp} -a %{SOURCE2} %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}-qt4.png
 %{__mkdir_p} %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
-%{_bindir}/convert -resize 48x48 %{SOURCE2} %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{name}-gtk2.png
+%{_bindir}/convert -resize 48x48 %{SOURCE2} %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{name}-qt4.png
 %{__mkdir_p} %{buildroot}%{_datadir}/pixmaps
-%{__cp} -a %{SOURCE2} %{buildroot}%{_datadir}/pixmaps/%{name}-gtk2.png
+%{__cp} -a %{SOURCE2} %{buildroot}%{_datadir}/pixmaps/%{name}-qt4.png
 
-/bin/echo 'Icon=%{name}-gtk2' >> %{buildroot}%{_datadir}/applications/yate-gtk2.desktop
+/bin/echo 'Icon=%{name}-qt4' >> %{buildroot}%{_datadir}/applications/yate-qt4.desktop
 %{_bindir}/desktop-file-install --vendor ""             \
         --dir %{buildroot}%{_datadir}/applications \
         --add-category X-MandrivaLinux-Internet-InstantMessaging \
         --remove-category Application                   \
-        %{buildroot}%{_datadir}/applications/yate-gtk2.desktop
+        %{buildroot}%{_datadir}/applications/yate-qt4.desktop
 
-# remove wrong location doc files
-rm -fr %{buildroot}%{_datadir}/doc/%{name}-%{version}
+# fix wrong location doc files
+%{__rm} -rf __doc
+%{__mkdir_p} __doc
+mv %{buildroot}%{_datadir}/doc/%{name}-%{version}/* __doc/
+rm -r __doc/api __doc/*.html
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -250,56 +255,67 @@ rm -fr %{buildroot}%{_datadir}/doc/%{name}-%{version}
 %postun -n %{lib_name} -p /sbin/ldconfig
 %endif
 
-%post gtk2
+%post qt4
 %{update_desktop_database}
 %update_icon_cache hicolor
 
-%postun gtk2
+%postun qt4
 %{update_desktop_database}
 %update_icon_cache hicolor
 
 %files
 %defattr(-, root, root)
-%doc ChangeLog COPYING README
+%doc __doc/*
 %attr(0755,root,root) %{_bindir}/yate
 %attr(0755,root,root) %{_initrddir}/yate
 %dir %{_libdir}/yate
-%dir %{_libdir}/yate/modules
+%dir %{_libdir}/yate/client
+%dir %{_libdir}/yate/server
 %dir %{_sysconfdir}/yate
-%{_libdir}/yate/modules/cdrbuild.yate
-%{_libdir}/yate/modules/cdrfile.yate
-%{_libdir}/yate/modules/regexroute.yate
-%{_libdir}/yate/modules/regfile.yate
-%{_libdir}/yate/modules/accfile.yate
-%{_libdir}/yate/modules/register.yate
-%{_libdir}/yate/modules/tonegen.yate
-%{_libdir}/yate/modules/tonedetect.yate
-%{_libdir}/yate/modules/wavefile.yate
-%{_libdir}/yate/modules/conference.yate
-%{_libdir}/yate/modules/moh.yate
-%{_libdir}/yate/modules/callgen.yate
-%{_libdir}/yate/modules/analyzer.yate
-%{_libdir}/yate/modules/rmanager.yate
-%{_libdir}/yate/modules/msgsniff.yate
-%{_libdir}/yate/modules/pbx.yate
-%{_libdir}/yate/modules/dbpbx.yate
-%{_libdir}/yate/modules/pbxassist.yate
-%{_libdir}/yate/modules/dumbchan.yate
-%{_libdir}/yate/modules/callfork.yate
-%{_libdir}/yate/modules/extmodule.yate
-%{_libdir}/yate/modules/yradius.yate
-%{_libdir}/yate/modules/ysipchan.yate
-%{_libdir}/yate/modules/yrtpchan.yate
-%{_libdir}/yate/modules/yiaxchan.yate
-%{_libdir}/yate/modules/enumroute.yate
-%{_libdir}/yate/modules/osschan.yate
-%{_libdir}/yate/modules/ilbccodec.yate
-%{_libdir}/yate/modules/speexcodec.yate
-%{_libdir}/yate/modules/yjinglechan.yate
-%{_libdir}/yate/modules/ystunchan.yate
-%{_libdir}/yate/modules/park.yate
-%{_libdir}/yate/modules/queues.yate
-%{_libdir}/yate/modules/sipfeatures.yate
+%{_libdir}/yate/analyzer.yate
+%{_libdir}/yate/callfork.yate
+%{_libdir}/yate/callgen.yate
+%{_libdir}/yate/cdrbuild.yate
+%{_libdir}/yate/cdrfile.yate
+%{_libdir}/yate/client/osschan.yate
+%{_libdir}/yate/conference.yate
+%{_libdir}/yate/dumbchan.yate
+%{_libdir}/yate/enumroute.yate
+%{_libdir}/yate/extmodule.yate
+%{_libdir}/yate/ilbccodec.yate
+%{_libdir}/yate/moh.yate
+%{_libdir}/yate/msgsniff.yate
+%{_libdir}/yate/mux.yate
+%{_libdir}/yate/pbx.yate
+%{_libdir}/yate/regexroute.yate
+%{_libdir}/yate/rmanager.yate
+%{_libdir}/yate/server/accfile.yate
+%{_libdir}/yate/server/analog.yate
+%{_libdir}/yate/server/analogdetect.yate
+%{_libdir}/yate/server/clustering.yate
+%{_libdir}/yate/server/dbpbx.yate
+%{_libdir}/yate/server/heartbeat.yate
+%{_libdir}/yate/server/lateroute.yate
+%{_libdir}/yate/server/mgcpca.yate
+%{_libdir}/yate/server/mgcpgw.yate
+%{_libdir}/yate/server/mrcpspeech.yate
+%{_libdir}/yate/server/park.yate
+%{_libdir}/yate/server/pbxassist.yate
+%{_libdir}/yate/server/queues.yate
+%{_libdir}/yate/server/regfile.yate
+%{_libdir}/yate/server/register.yate
+%{_libdir}/yate/server/sipfeatures.yate
+%{_libdir}/yate/server/yradius.yate
+%{_libdir}/yate/server/ysigchan.yate
+%{_libdir}/yate/speexcodec.yate
+%{_libdir}/yate/tonedetect.yate
+%{_libdir}/yate/tonegen.yate
+%{_libdir}/yate/wavefile.yate
+%{_libdir}/yate/yiaxchan.yate
+%{_libdir}/yate/yjinglechan.yate
+%{_libdir}/yate/yrtpchan.yate
+%{_libdir}/yate/ysipchan.yate
+%{_libdir}/yate/ystunchan.yate
 %dir %{_logdir}/yate
 %{_mandir}/man8/yate.8*
 %config(noreplace) %{_sysconfdir}/logrotate.d/yate
@@ -324,58 +340,73 @@ rm -fr %{buildroot}%{_datadir}/doc/%{name}-%{version}
 %config(noreplace) %{_sysconfdir}/yate/ysipchan.conf
 %config(noreplace) %{_sysconfdir}/yate/ystunchan.conf
 %config(noreplace) %{_sysconfdir}/yate/sipfeatures.conf
+%config(noreplace) %{_sysconfdir}/yate/analog.conf
+%config(noreplace) %{_sysconfdir}/yate/clustering.conf
+%config(noreplace) %{_sysconfdir}/yate/heartbeat.conf
+%config(noreplace) %{_sysconfdir}/yate/lateroute.conf
+%config(noreplace) %{_sysconfdir}/yate/mgcpca.conf
+%config(noreplace) %{_sysconfdir}/yate/mgcpgw.conf
+%config(noreplace) %{_sysconfdir}/yate/mux.conf
+%config(noreplace) %{_sysconfdir}/yate/queues.conf
+%config(noreplace) %{_sysconfdir}/yate/ysigchan.conf
 
 %files alsa
 %defattr(-, root, root)
-%{_libdir}/yate/modules/alsachan.yate
+%{_libdir}/yate/client/alsachan.yate
 
 %files gsm
 %defattr(-, root, root)
-%{_libdir}/yate/modules/gsmcodec.yate
+%{_libdir}/yate/gsmcodec.yate
 
 %files h323
 %defattr(-, root, root)
-%{_libdir}/yate/modules/h323chan.yate
+%{_libdir}/yate/h323chan.yate
 %config(noreplace) %{_sysconfdir}/yate/h323chan.conf
 
 %files isdn
 %defattr(-, root, root)
 %if 0
-%{_libdir}/yate/modules/wpchan.yate
+%{_libdir}/yate/server/wpchan.yate
 %endif
-%{_libdir}/yate/modules/zapchan.yate
-%config(noreplace) %{_sysconfdir}/yate/wpchan.conf
-%config(noreplace) %{_sysconfdir}/yate/zapchan.conf
+%{_libdir}/yate/server/zapcard.yate
+#%{_libdir}/yate/zapcard.yate
+%config(noreplace) %{_sysconfdir}/yate/wpcard.conf
+%config(noreplace) %{_sysconfdir}/yate/zapcard.conf
+
+%files openssl
+%defattr(-, root, root)
+%{_libdir}/yate/openssl.yate
 
 %files mysql
 %defattr(-, root, root)
-%{_libdir}/yate/modules/mysqldb.yate
+%{_libdir}/yate/server/mysqldb.yate
 %config(noreplace) %{_sysconfdir}/yate/mysqldb.conf
 
 %files pgsql
 %defattr(-, root, root)
-%{_libdir}/yate/modules/pgsqldb.yate
+%{_libdir}/yate/server/pgsqldb.yate
 %config(noreplace) %{_sysconfdir}/yate/pgsqldb.conf
 
-%files gtk2
+%files client-common
 %defattr(-, root, root)
-%{_bindir}/yate-gtk2
-%{_datadir}/applications/yate-gtk2.desktop
-%dir %{_datadir}/yate/skin
-%{_datadir}/yate/skin/*
+%{_datadir}/pixmaps/null_team-*.png
+%dir %{_datadir}/yate/skins
+%{_datadir}/yate/skins/*
+%dir %{_datadir}/yate/sounds
+%{_datadir}/yate/sounds/*
 %dir %{_datadir}/yate/help
 %{_datadir}/yate/help/*
-%config(noreplace) %{_sysconfdir}/yate/yate-gtk2.conf
 %config(noreplace) %{_sysconfdir}/yate/providers.conf
-%{_datadir}/icons/hicolor/16x16/apps/%{name}-gtk2.png
-%{_datadir}/icons/hicolor/32x32/apps/%{name}-gtk2.png
-%{_datadir}/icons/hicolor/48x48/apps/%{name}-gtk2.png
-%{_datadir}/pixmaps/%{name}-gtk2.png
 
-%files mozilla
+%files qt4
 %defattr(-, root, root)
-%dir %{_libdir}/yate/modules/gtk2
-%{_libdir}/yate/modules/gtk2/*
+%{_bindir}/yate-qt4
+%{_datadir}/applications/yate-qt4.desktop
+%config(noreplace) %{_sysconfdir}/yate/yate-qt4.conf
+%{_datadir}/icons/hicolor/16x16/apps/%{name}-qt4.png
+%{_datadir}/icons/hicolor/32x32/apps/%{name}-qt4.png
+%{_datadir}/icons/hicolor/48x48/apps/%{name}-qt4.png
+%{_datadir}/pixmaps/%{name}-qt4.png
 
 %files scripts
 %defattr(-, root, root)
