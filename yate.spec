@@ -215,7 +215,7 @@ export LDFLAGS="-lpthread `pkg-config --libs QtCore QtGui QtXml QtNetwork`"
 }
 EOF
 
-%{__rm} %{buildroot}%{_libdir}/menu/yate-qt4.menu
+%{_bindir}/find %{buildroot} -type f -name '*.menu' | %{_bindir}/xargs -t %{__rm}
 %{__mkdir_p} %{buildroot}%{_datadir}/icons/hicolor/16x16/apps
 %{__cp} -a %{SOURCE1} %{buildroot}%{_datadir}/icons/hicolor/16x16/apps/%{name}-qt4.png
 %{__mkdir_p} %{buildroot}%{_datadir}/icons/hicolor/32x32/apps
