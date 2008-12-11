@@ -21,7 +21,7 @@ Requires(preun): rpm-helper
 BuildRequires:  desktop-file-utils
 BuildRequires:  doxygen
 BuildRequires:  gcc-c++
-BuildRequires:  ImageMagick
+BuildRequires:  imagemagick
 BuildRequires:  alsa-lib-devel
 BuildRequires:  coredumper-devel
 BuildRequires:  gsm-devel
