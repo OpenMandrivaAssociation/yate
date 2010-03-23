@@ -322,6 +322,15 @@ rm -r __doc/api __doc/*.html
 %{_libdir}/yate/yrtpchan.yate
 %{_libdir}/yate/ysipchan.yate
 %{_libdir}/yate/ystunchan.yate
+%{_libdir}/yate/filetransfer.yate
+%{_libdir}/yate/jingle/jinglefeatures.yate
+%{_libdir}/yate/server/callcounters.yate
+%{_libdir}/yate/server/ciscosm.yate
+%{_libdir}/yate/server/dbwave.yate
+%{_libdir}/yate/server/queuesnotify.yate
+%{_libdir}/yate/ysockschan.yate
+
+
 %dir %{_logdir}/yate
 %{_mandir}/man8/yate.8*
 %config(noreplace) %{_sysconfdir}/logrotate.d/yate
@@ -378,11 +387,7 @@ rm -r __doc/api __doc/*.html
 
 %files isdn
 %defattr(-, root, root)
-%if 0
-%{_libdir}/yate/server/wpchan.yate
-%endif
-#%{_libdir}/yate/server/zapcard.yate
-#%{_libdir}/yate/zapcard.yate
+%{_libdir}/yate/server/zapcard.yate
 %config(noreplace) %{_sysconfdir}/yate/wpcard.conf
 %config(noreplace) %{_sysconfdir}/yate/zapcard.conf
 
@@ -420,6 +425,7 @@ rm -r __doc/api __doc/*.html
 %{_datadir}/icons/hicolor/32x32/apps/%{name}-qt4.png
 %{_datadir}/icons/hicolor/48x48/apps/%{name}-qt4.png
 %{_datadir}/pixmaps/%{name}-qt4.png
+%{_libdir}/yate/qt4/updater.yate
 
 %files scripts
 %defattr(-, root, root)
