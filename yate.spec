@@ -15,7 +15,9 @@ Source1:        yate-16.png
 Source2:        yate-32.png
 Patch0:         yate-fhs.patch
 
+# applied upstream  http://yate.null.ro/mantis/view.php?id=204
 Patch3:         yate-fix_format_string.patch 
+# applied upstream  http://yate.null.ro/mantis/view.php?id=205
 Patch4:         yate-fix_qt_detection.diff
 
 Patch5:         yate-fix_linking.diff 
