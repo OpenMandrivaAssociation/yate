@@ -13,14 +13,14 @@ Source0:        http://yate.null.ro/tarballs/yate2/%{name}-%{version}-1.tar.gz
 # Converted from <http://yate.null.ro/favicon.ico>
 Source1:        yate-16.png
 Source2:        yate-32.png
-Patch0:         yate-fhs.patch
 
 # applied upstream  http://yate.null.ro/mantis/view.php?id=204
 Patch3:         yate-fix_format_string.patch 
 # applied upstream  http://yate.null.ro/mantis/view.php?id=205
 Patch4:         yate-fix_qt_detection.diff
-
+# sent upstream http://yate.null.ro/mantis/view.php?id=206
 Patch5:         yate-fix_linking.diff 
+
 Requires(post): rpm-helper
 Requires(preun): rpm-helper
 BuildRequires:  desktop-file-utils
