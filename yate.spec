@@ -2,24 +2,23 @@
 %define lib_name_devel %mklibname %{name} -d
 
 Name:           yate
-Version:        2.2
+Version:        2.2.0
 Release:        %mkrel 1
 Epoch:          0
 Summary:        Yet Another Telephony Engine
 License:        GPLv2+
 Group:          Networking/Instant messaging
 URL:            http://yate.null.ro/
-Source0:        http://yate.null.ro/tarballs/yate2/yate2.tar.gz
+Source0:        http://yate.null.ro/tarballs/yate2/%{name}-%{version}-1.tar.gz
 # Converted from <http://yate.null.ro/favicon.ico>
 Source1:        yate-16.png
 Source2:        yate-32.png
 Patch0:         yate-fhs.patch
-Patch1:         yate-link-cxx.patch
-Patch2:         yate-linking-order.patch
 
 Patch3:         yate-fix_format_string.patch 
 Patch4:         yate-fix_qt_detection.diff
 
+Patch5:         yate-fix_linking.diff 
 Requires(post): rpm-helper
 Requires(preun): rpm-helper
 BuildRequires:  desktop-file-utils
@@ -174,10 +173,10 @@ once. It contains no files, just dependencies to all other packages.
 %prep
 %setup -q -n %{name}
 #%%patch0 -p1
-%patch1 -p1
-%patch2 -p1
 %patch3 -p0
 %patch4 -p0
+%patch5 -p0
+
 
 # fix openh323 detection
 %{__perl} -pi -e 's|/lib/|/%{_lib}/|g' configure.in
@@ -189,22 +188,20 @@ once. It contains no files, just dependencies to all other packages.
 # fix caps and logdir
 %{__perl} -pi -e 's|YATE|yate|g;' \
               -e 's|/var/log|%{_logdir}|g;' \
-  packing/yate.init
+  packing/rpm/yate.init
 
 %build
-#export CXXFLAGS="%{optflags} `pkg-config --cflags QtCore QtGui QtXml QtNetwork`"
-#export LDFLAGS="-lpthread `pkg-config --libs QtCore QtGui QtXml QtNetwork`"
 ./autogen.sh
 %{configure2_5x} --with-archlib=%{_lib}
-%{__make} 
-%{__make} apidocs-everything 
+make 
+%make apidocs-everything 
 
 %install
 %{__rm} -rf %{buildroot}
 %{makeinstall_std}
 
 %{__mkdir_p} %{buildroot}%{_initrddir}
-%{__cp} -a packing/yate.init %{buildroot}%{_initrddir}/yate
+%{__cp} -a packing/rpm/yate.init %{buildroot}%{_initrddir}/yate
 
 %{__mkdir_p} %{buildroot}%{_logdir}/yate
 
