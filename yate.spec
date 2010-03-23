@@ -2,8 +2,8 @@
 %define lib_name_devel %mklibname %{name} -d
 
 Name:           yate
-Version:        2.0.0
-Release:        %mkrel 4
+Version:        2.2
+Release:        %mkrel 1
 Epoch:          0
 Summary:        Yet Another Telephony Engine
 License:        GPLv2+
@@ -16,6 +16,10 @@ Source2:        yate-32.png
 Patch0:         yate-fhs.patch
 Patch1:         yate-link-cxx.patch
 Patch2:         yate-linking-order.patch
+
+Patch3:         yate-fix_format_string.patch 
+Patch4:         yate-fix_qt_detection.diff
+
 Requires(post): rpm-helper
 Requires(preun): rpm-helper
 BuildRequires:  desktop-file-utils
@@ -172,6 +176,9 @@ once. It contains no files, just dependencies to all other packages.
 #%%patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p0
+%patch4 -p0
+
 # fix openh323 detection
 %{__perl} -pi -e 's|/lib/|/%{_lib}/|g' configure.in
 # fix CFLAGS
@@ -185,8 +192,9 @@ once. It contains no files, just dependencies to all other packages.
   packing/yate.init
 
 %build
-export CXXFLAGS="%{optflags} `pkg-config --cflags QtCore QtGui QtXml QtNetwork`"
-export LDFLAGS="-lpthread `pkg-config --libs QtCore QtGui QtXml QtNetwork`"
+#export CXXFLAGS="%{optflags} `pkg-config --cflags QtCore QtGui QtXml QtNetwork`"
+#export LDFLAGS="-lpthread `pkg-config --libs QtCore QtGui QtXml QtNetwork`"
+./autogen.sh
 %{configure2_5x} --with-archlib=%{_lib}
 %{__make} 
 %{__make} apidocs-everything 
@@ -225,6 +233,7 @@ EOF
 %{__mkdir_p} %{buildroot}%{_datadir}/pixmaps
 %{__cp} -a %{SOURCE2} %{buildroot}%{_datadir}/pixmaps/%{name}-qt4.png
 
+mkdir -p %{buildroot}%{_datadir}/applications/
 /bin/echo 'Icon=%{name}-qt4' >> %{buildroot}%{_datadir}/applications/yate-qt4.desktop
 %{_bindir}/desktop-file-install --vendor ""             \
         --dir %{buildroot}%{_datadir}/applications \
@@ -235,7 +244,7 @@ EOF
 # fix wrong location doc files
 %{__rm} -rf __doc
 %{__mkdir_p} __doc
-mv %{buildroot}%{_datadir}/doc/%{name}-%{version}/* __doc/
+mv %{buildroot}%{_datadir}/doc/%{name}*/* __doc/
 rm -r __doc/api __doc/*.html
 
 %clean
@@ -368,7 +377,7 @@ rm -r __doc/api __doc/*.html
 %if 0
 %{_libdir}/yate/server/wpchan.yate
 %endif
-%{_libdir}/yate/server/zapcard.yate
+#%{_libdir}/yate/server/zapcard.yate
 #%{_libdir}/yate/zapcard.yate
 %config(noreplace) %{_sysconfdir}/yate/wpcard.conf
 %config(noreplace) %{_sysconfdir}/yate/zapcard.conf
