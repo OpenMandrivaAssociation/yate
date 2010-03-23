@@ -325,36 +325,43 @@ rm -r __doc/api __doc/*.html
 %dir %{_logdir}/yate
 %{_mandir}/man8/yate.8*
 %config(noreplace) %{_sysconfdir}/logrotate.d/yate
+
 %config(noreplace) %{_sysconfdir}/yate/accfile.conf
+%config(noreplace) %{_sysconfdir}/yate/analog.conf
+%config(noreplace) %{_sysconfdir}/yate/callcounters.conf
 %config(noreplace) %{_sysconfdir}/yate/cdrbuild.conf
 %config(noreplace) %{_sysconfdir}/yate/cdrfile.conf
+%config(noreplace) %{_sysconfdir}/yate/ciscosm.conf
+%config(noreplace) %{_sysconfdir}/yate/clustering.conf
 %config(noreplace) %{_sysconfdir}/yate/dbpbx.conf
 %config(noreplace) %{_sysconfdir}/yate/dsoundchan.conf
 %config(noreplace) %{_sysconfdir}/yate/enumroute.conf
 %config(noreplace) %{_sysconfdir}/yate/extmodule.conf
+%config(noreplace) %{_sysconfdir}/yate/filetransfer.conf
+%config(noreplace) %{_sysconfdir}/yate/heartbeat.conf
+%config(noreplace) %{_sysconfdir}/yate/lateroute.conf
+%config(noreplace) %{_sysconfdir}/yate/mgcpca.conf
+%config(noreplace) %{_sysconfdir}/yate/mgcpgw.conf
 %config(noreplace) %{_sysconfdir}/yate/moh.conf
+%config(noreplace) %{_sysconfdir}/yate/mux.conf
 %config(noreplace) %{_sysconfdir}/yate/pbxassist.conf
+%config(noreplace) %{_sysconfdir}/yate/queues.conf
+%config(noreplace) %{_sysconfdir}/yate/queuesnotify.conf
 %config(noreplace) %{_sysconfdir}/yate/regexroute.conf
 %config(noreplace) %{_sysconfdir}/yate/regfile.conf
 %config(noreplace) %{_sysconfdir}/yate/register.conf
 %config(noreplace) %{_sysconfdir}/yate/rmanager.conf
+%config(noreplace) %{_sysconfdir}/yate/sipfeatures.conf
+%config(noreplace) %{_sysconfdir}/yate/tdmcard.conf
 %config(noreplace) %{_sysconfdir}/yate/yate.conf
 %config(noreplace) %{_sysconfdir}/yate/yiaxchan.conf
 %config(noreplace) %{_sysconfdir}/yate/yjinglechan.conf
 %config(noreplace) %{_sysconfdir}/yate/yradius.conf
 %config(noreplace) %{_sysconfdir}/yate/yrtpchan.conf
-%config(noreplace) %{_sysconfdir}/yate/ysipchan.conf
-%config(noreplace) %{_sysconfdir}/yate/ystunchan.conf
-%config(noreplace) %{_sysconfdir}/yate/sipfeatures.conf
-%config(noreplace) %{_sysconfdir}/yate/analog.conf
-%config(noreplace) %{_sysconfdir}/yate/clustering.conf
-%config(noreplace) %{_sysconfdir}/yate/heartbeat.conf
-%config(noreplace) %{_sysconfdir}/yate/lateroute.conf
-%config(noreplace) %{_sysconfdir}/yate/mgcpca.conf
-%config(noreplace) %{_sysconfdir}/yate/mgcpgw.conf
-%config(noreplace) %{_sysconfdir}/yate/mux.conf
-%config(noreplace) %{_sysconfdir}/yate/queues.conf
 %config(noreplace) %{_sysconfdir}/yate/ysigchan.conf
+%config(noreplace) %{_sysconfdir}/yate/ysipchan.conf
+%config(noreplace) %{_sysconfdir}/yate/ysockschan.conf
+%config(noreplace) %{_sysconfdir}/yate/ystunchan.conf
 
 %files alsa
 %defattr(-, root, root)
