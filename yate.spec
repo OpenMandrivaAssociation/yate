@@ -3,7 +3,7 @@
 
 Name:           yate
 Version:        2.2.0
-Release:        %mkrel 2
+Release:        %mkrel 3
 Epoch:          0
 Summary:        Yet Another Telephony Engine
 License:        GPLv2+
