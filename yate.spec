@@ -2,7 +2,7 @@
 %define lib_name_devel %mklibname %{name} -d
 
 Name:           yate
-Version:        2.2.0
+Version:        3.3.2
 Release:        %mkrel 6
 Epoch:          0
 Summary:        Yet Another Telephony Engine
@@ -175,9 +175,9 @@ once. It contains no files, just dependencies to all other packages.
 %prep
 %setup -q -n %{name}
 #%%patch0 -p1
-%patch3 -p0
-%patch4 -p0
-%patch5 -p0
+#%patch3 -p0
+#%patch4 -p0
+#%patch5 -p0
 
 
 # fix openh323 detection
