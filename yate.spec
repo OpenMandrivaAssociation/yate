@@ -3,7 +3,7 @@
 %define lib_name_devel %mklibname %{name} -d
 
 Name:           yate
-Version:        4.0.0
+Version:        4.1.0
 Release:        %mkrel 1
 Summary:        Yet Another Telephony Engine
 License:        GPLv2+
@@ -13,13 +13,7 @@ Source0:        http://yate.null.ro/tarballs/yate%{major}/%{name}-%{version}-1.t
 # Converted from <http://yate.null.ro/favicon.ico>
 Source1:        yate-16.png
 Source2:        yate-32.png
-
-# applied upstream  http://yate.null.ro/mantis/view.php?id=204
-Patch3:         yate-fix_format_string.patch 
-# applied upstream  http://yate.null.ro/mantis/view.php?id=205
-Patch4:         yate-fix_qt_detection.diff
-# sent upstream http://yate.null.ro/mantis/view.php?id=206
-Patch5:         yate-fix_linking.diff 
+Patch0:		yate-4.1.0-mdv-dont_break_cflags.patch
 
 Requires(post): rpm-helper
 Requires(preun): rpm-helper
@@ -27,7 +21,7 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  doxygen
 BuildRequires:  gcc-c++
 BuildRequires:  imagemagick
-BuildRequires:  alsa-lib-devel
+BuildRequires:  pkgconfig(alsa)
 BuildRequires:  coredumper-devel
 BuildRequires:  gsm-devel
 BuildRequires:  qt4-devel
@@ -57,10 +51,17 @@ for small to large scale projects.
 %dir %{_datadir}/yate/data
 %{_datadir}/yate/data/*
 %dir %{_libdir}/yate
+%dir %{_libdir}/yate/client
+%dir %{_libdir}/yate/jabber
+%dir %{_libdir}/yate/server
+%dir %{_libdir}/yate/sig
+%dir %{_libdir}/yate/sip
 %{_libdir}/yate/cdrbuild.yate
 %{_libdir}/yate/cdrfile.yate
 %{_libdir}/yate/regexroute.yate
 %{_libdir}/yate/javascript.yate
+%{_libdir}/yate/gvoice.yate
+%{_libdir}/yate/isaccodec.yate
 %{_libdir}/yate/server/regfile.yate
 %{_libdir}/yate/server/accfile.yate
 %{_libdir}/yate/server/register.yate
@@ -178,6 +179,7 @@ for small to large scale projects.
 %config(noreplace) %{_sysconfdir}/yate/ss7_lnp_ansi.conf
 %config(noreplace) %{_sysconfdir}/yate/camel_map.conf
 %config(noreplace) %{_sysconfdir}/yate/sip_cnam_lnp.conf
+%config(noreplace) %{_sysconfdir}/yate/gvoice.conf
 
 %config %{_sysconfdir}/logrotate.d/yate
 
@@ -259,7 +261,7 @@ kernel interfaces.
 %config(noreplace) %{_sysconfdir}/yate/tdmcard.conf
 
 #------------------------------------------------------------------------------
-#
+
 #%package lksctp
 #Summary:        Linux Kernel based SCTP support for Yate
 #Group:          Networking/Instant messaging
@@ -271,7 +273,7 @@ kernel interfaces.
 #
 #%files lksctp
 #%{_libdir}/yate/server/lksctp.yate
-#
+
 #------------------------------------------------------------------------------
 
 %package openssl
@@ -370,7 +372,6 @@ with a Qt version 4 graphical interface.
 %{_bindir}/yate-qt4
 %{_libdir}/libyateqt4.so.*
 %{_libdir}/yate/qt4/*.yate
-#%{_menudir}/yate-qt4.menu
 %{_datadir}/applications/yate-qt4.desktop
 %config(noreplace) %{_sysconfdir}/yate/yate-qt4.conf
 
@@ -456,21 +457,23 @@ once. It contains no files, just dependencies to all other packages.
 
 %prep
 %setup -q -n %{name}
+%patch0 -p1
 
 # fix openh323 detection
 %{__perl} -pi -e 's|/lib/|/%{_lib}/|g' configure.in
 # fix CFLAGS
-%{__perl} -pi -e 's|^CFLAGS := (.*)|CFLAGS := %{optflags} \1|g;' \
-              -e 's|^CXXFLAGS := (.*)|CXXFLAGS := %{optflags} \1|g;' \
-              -e 's|^CPPFLAGS := (.*)|CPPFLAGS := %{optflags} \1|g;' \
-  `%{_bindir}/find . -type f -name Makefile.in`
+#%{__perl} -pi -e 's|^CFLAGS := (.*)|CFLAGS := %{optflags} \1|g;' \
+#              -e 's|^CXXFLAGS := (.*)|CXXFLAGS := %{optflags} \1|g;' \
+#              -e 's|^CPPFLAGS := (.*)|CPPFLAGS := %{optflags} \1|g;' \
+#  `%{_bindir}/find . -type f -name Makefile.in`
 # fix caps and logdir
 %{__perl} -pi -e 's|YATE|yate|g;' \
               -e 's|/var/log|%{_logdir}|g;' \
   packing/rpm/yate.init
 
+autoreconf
+
 %build
-./autogen.sh
 %{configure2_5x} --with-archlib=%{_lib}
 make 
 %make apidocs-everything 
