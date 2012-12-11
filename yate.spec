@@ -1,15 +1,16 @@
 %define major 4
 %define lib_name %mklibname %{name} %{major}
 %define lib_name_devel %mklibname %{name} -d
+%define uprel	2
 
 Name:           yate
-Version:        4.1.0
-Release:        %mkrel 1
+Version:        4.2.0
+Release:        1
 Summary:        Yet Another Telephony Engine
 License:        GPLv2+
 Group:          Networking/Instant messaging
 URL:            http://yate.null.ro/
-Source0:        http://yate.null.ro/tarballs/yate%{major}/%{name}-%{version}-1.tar.gz
+Source0:        http://yate.null.ro/tarballs/yate%{major}/%{name}-%{version}-%{uprel}.tar.gz
 # Converted from <http://yate.null.ro/favicon.ico>
 Source1:        yate-16.png
 Source2:        yate-32.png
@@ -30,10 +31,11 @@ BuildRequires:  mysql-devel
 BuildRequires:  openssl-devel
 BuildRequires:  pq-devel
 BuildRequires:  pri-devel
-BuildRequires:  pwlib-devel
+#BuildRequires:  pkgconfig(ptlib)
+BuildRequires:	pkgconfig(spandsp)
 BuildRequires:  speex-devel
 BuildRequires:  tonezone-devel
-BuildRequires:  openh323-devel
+#BuildRequires:  pkgconfig(opal)
 BuildRequires:  postgresql-devel
 
 %description
@@ -87,6 +89,8 @@ for small to large scale projects.
 %{_libdir}/yate/yiaxchan.yate
 %{_libdir}/yate/yjinglechan.yate
 %{_libdir}/yate/enumroute.yate
+%{_libdir}/yate/faxchan.yate
+%{_libdir}/yate/ilbcwebrtc.yate
 %{_libdir}/yate/ilbccodec.yate
 %{_libdir}/yate/server/dbwave.yate
 %{_libdir}/yate/server/dbpbx.yate
@@ -116,6 +120,7 @@ for small to large scale projects.
 %{_libdir}/yate/server/monitoring.yate
 %{_libdir}/yate/server/ysnmpagent.yate
 %{_libdir}/yate/server/cache.yate
+%{_libdir}/yate/server/eventlogs.yate
 %{_libdir}/yate/client/osschan.yate
 %{_libdir}/yate/client/jabberclient.yate
 %{_libdir}/yate/jabber/jabberserver.yate
@@ -180,6 +185,8 @@ for small to large scale projects.
 %config(noreplace) %{_sysconfdir}/yate/camel_map.conf
 %config(noreplace) %{_sysconfdir}/yate/sip_cnam_lnp.conf
 %config(noreplace) %{_sysconfdir}/yate/gvoice.conf
+%config(noreplace) %{_sysconfdir}/yate/eventlogs.conf
+%config(noreplace) %{_sysconfdir}/yate/lksctp.conf
 
 %config %{_sysconfdir}/logrotate.d/yate
 
@@ -239,7 +246,7 @@ Yate driver for the ITU-T H.323 VoIP protocol based on the OpenH323
 library.
 
 %files h323
-%{_libdir}/yate/h323chan.yate
+#%{_libdir}/yate/h323chan.yate
 %config(noreplace) %{_sysconfdir}/yate/h323chan.conf
 
 #------------------------------------------------------------------------------
@@ -439,7 +446,7 @@ Requires:       %{name} = %{EVRD}
 Requires:       %{name}-alsa = %{EVRD}
 Requires:       %{name}-gsm = %{EVRD}
 Requires:       %{name}-speex = %{EVRD}
-Requires:       %{name}-h323 = %{EVRD}
+#Requires:       %{name}-h323 = %{EVRD}
 Requires:       %{name}-isdn = %{EVRD}
 #Requires:       %{name}-lksctp = %{EVRD}
 Requires:       %{name}-openssl = %{EVRD}
@@ -525,3 +532,117 @@ mv %{buildroot}%{_docdir}/%{name}-%{version} %{buildroot}%{_docdir}/%{name}
 
 install -d -m 755 %{buildroot}/%{_docdir}/%{lib_name_devel}
 mv %{buildroot}%{_docdir}/%{name}/*.html %{buildroot}%{_docdir}/%{name}/api/ %{buildroot}/%{_docdir}/%{lib_name_devel}
+
+
+%changelog
+* Wed Apr 25 2012 Dmitry Mikhirev <dmikhirev@mandriva.org> 4.1.0-1mdv2011.0
++ Revision: 793322
+- update to 4.1.0
+- update to 4.0.0
+
+  + Sergey Zhemoitel <serg@mandriva.org>
+    - resource for new version
+    - update to new version 3.3.2
+
+* Thu Mar 17 2011 Oden Eriksson <oeriksson@mandriva.com> 0:2.2.0-6
++ Revision: 645907
+- relink against libmysqlclient.so.18
+
+* Sat Jan 01 2011 Oden Eriksson <oeriksson@mandriva.com> 0:2.2.0-5mdv2011.0
++ Revision: 627292
+- rebuilt against mysql-5.5.8 libs, again
+
+* Thu Dec 30 2010 Oden Eriksson <oeriksson@mandriva.com> 0:2.2.0-4mdv2011.0
++ Revision: 626566
+- rebuilt against mysql-5.5.8 libs
+
+* Wed Dec 08 2010 Oden Eriksson <oeriksson@mandriva.com> 0:2.2.0-3mdv2011.0
++ Revision: 615758
+- the mass rebuild of 2010.1 packages
+
+* Thu Apr 08 2010 Michael Scherer <misc@mandriva.org> 0:2.2.0-2mdv2010.1
++ Revision: 533138
+- Rebuild for new libopenssl
+- remove patch0, not applied and it seems that yate respect fhs already
+
+* Tue Mar 23 2010 Michael Scherer <misc@mandriva.org> 0:2.2.0-1mdv2010.1
++ Revision: 526776
+- drop patch1, applied upstream
+- drop patch2, splitted and rediffed in 3 patch
+- rediff patchs for version 2.2
+- really update to 2.2, and no longer hardcode the tarball version, thus leading to mdvsys update failure
+- add patch to fix qt detection
+- complete patch for linking order
+- add patch for format string detection
+- update to 2.2
+- fix various problems
+
+  + Oden Eriksson <oeriksson@mandriva.com>
+    - rebuild
+    - lowercase ImageMagick
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - rebuild
+
+* Mon Dec 08 2008 Funda Wang <fwang@mandriva.org> 0:2.0.0-2mdv2009.1
++ Revision: 311718
+- rebuild for new mysql
+
+* Mon Aug 11 2008 David Walluck <walluck@mandriva.org> 0:2.0.0-1mdv2009.0
++ Revision: 270884
+- fix menu removal
+- 2.0.0
+
+* Wed Jul 23 2008 Thierry Vignaud <tv@mandriva.org> 0:1.3.0-3mdv2009.0
++ Revision: 243000
+- rebuild
+- kill re-definition of %%buildroot on Pixel's request
+
+  + Pixel <pixel@mandriva.com>
+    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+
+  + Olivier Blin <blino@mandriva.org>
+    - restore BuildRoot
+
+* Tue Sep 04 2007 Funda Wang <fwang@mandriva.org> 0:1.3.0-1mdv2008.0
++ Revision: 79276
+- fix file list
+- remove unexist file
+- spandsp is not stable (yate bug#84)
+- rename BR spandsp
+- New version 1.3.0
+
+  + David Walluck <walluck@mandriva.org>
+    - update BuildRequires
+
+* Wed Apr 18 2007 David Walluck <walluck@mandriva.org> 0:1.2.0-2mdv2008.0
++ Revision: 14289
+- BuildRequires: libspeex-devel
+- 1.2.0
+
+
+* Sun Jan 07 2007 David Walluck <walluck@mandriva.org> 1.1.0-5mdv2007.0
++ Revision: 105034
+- rebuild for new libpq-devel
+
+* Sun Dec 17 2006 David Walluck <walluck@mandriva.org> 0:1.1.0-4mdv2007.1
++ Revision: 98246
+- bumo release
+- fix initscript
+  create logdir and add logrotate file
+
+* Sun Dec 17 2006 David Walluck <walluck@mandriva.org> 0:1.1.0-3mdv2007.1
++ Revision: 98234
+- try non-parallel make
+- menu icons
+  Makefile fixes and better FHS compliance
+  yate-all no longer requires yate-devel
+
+* Sat Dec 16 2006 David Walluck <walluck@mandriva.org> 0:1.1.0-1mdv2007.1
++ Revision: 98054
+- BuildRequires: postgresql-devel
+- Import yate
+
+* Fri Dec 15 2006 David Walluck <walluck@mandriva.org> 0:1.1.0-1mdv2007.1
+- release
+
