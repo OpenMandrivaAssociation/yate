@@ -5,7 +5,7 @@
 
 Name:           yate
 Version:        4.2.0
-Release:        1
+Release:        2
 Summary:        Yet Another Telephony Engine
 License:        GPLv2+
 Group:          Networking/Instant messaging
