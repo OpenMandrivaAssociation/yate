@@ -9,7 +9,7 @@ Release:        2
 Summary:        Yet Another Telephony Engine
 License:        GPLv2+
 Group:          Networking/Instant messaging
-URL:            http://yate.null.ro/
+URL:            https://yate.null.ro/
 Source0:        http://yate.null.ro/tarballs/yate%{major}/%{name}-%{version}-%{uprel}.tar.gz
 # Converted from <http://yate.null.ro/favicon.ico>
 Source1:        yate-16.png
