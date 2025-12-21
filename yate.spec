@@ -18,6 +18,7 @@ Patch0:		yate-4.1.0-mdv-dont_break_cflags.patch
 
 Requires(post): rpm-helper
 Requires(preun): rpm-helper
+BuildRequires:	make
 BuildRequires:  desktop-file-utils
 BuildRequires:  doxygen
 BuildRequires:  gcc-c++
